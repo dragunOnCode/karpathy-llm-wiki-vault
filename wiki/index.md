@@ -54,6 +54,18 @@
 
 ---
 
+## Claims（关键判断）
+
+（待从已有 Sources 回填提炼；新 ingest 将自动创建）
+
+---
+
+## Domains（领域综合）
+
+（待建立；例如 Prompt Engineering、Agent Memory 等主题地图页）
+
+---
+
 ## Syntheses（综合分析）
 
 - [[5c-prompt-markdown-note-taking]] — 基于 5C Framework 的 Markdown 知识笔记撰写提示词模板
@@ -62,4 +74,4 @@
 
 ---
 
-*最后更新：2026-04-12*
+*最后更新：2026-07-14*

@@ -133,3 +133,8 @@
 - 知识冲突：1 个（概念性标注）
 
 ---
+
+## [2026-07-14] sync | 扩展 Wiki Schema：新增 Claims 与 Domains
+- **变更**: 更新 [[CLAUDE.md]] 与 ingest/query/update/lint skills；新增目录 `wiki/claims/`、`wiki/domains/`；更新 [[index.md]] 分类骨架
+- **说明**: Claim 须一句话摘要+内容+Source 回链+出处锚点；Domain 须一句话摘要+概述+概念/实体/claim 双链
+- **冲突**: 无
