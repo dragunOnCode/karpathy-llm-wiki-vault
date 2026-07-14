@@ -123,7 +123,7 @@ last_updated: YYYY-MM-DD
 - 概念 → `wiki/concepts/`
 
 **处理逻辑：**
-1. 页面不存在 → 按照 CLAUDE.md 的 Frontmatter 规范创建新页面
+1. 页面不存在 → 按照 AGENTS.md 的 Frontmatter 规范创建新页面
 2. 页面已存在 → 读取现有内容，**增量合并**新信息
 3. **发现冲突** → **立即暂停**，向用户报告冲突内容，询问处理方式后再继续
 

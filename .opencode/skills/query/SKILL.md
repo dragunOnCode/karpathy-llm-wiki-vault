@@ -90,7 +90,7 @@ user-invocable: true
 - **原文含相关内容**：
 
   向用户简要说明「wiki 未覆盖，但原文有相关段落」，并 **调用 update 技能**：
-  1. 读取并遵循 `.claude/skills/update/SKILL.md`
+  1. 读取并遵循 `.opencode/skills/update/SKILL.md`
   2. 传入：用户问题、缺口说明、原文路径、相关摘录定位、相关 `[[wiki 页面]]`
   3. 由 update 提示落点并在用户确认后写入
   4. update 完成后，基于 **更新后的 wiki** 继续步骤 5 回答
@@ -117,7 +117,7 @@ user-invocable: true
 
 > 这是一个有价值的总结，是否需要我将其保存到 wiki/syntheses/ 目录？
 
-用户同意后，可自行按 CLAUDE.md 写入，或交由 update（选项 D）完成，避免重复建页。
+用户同意后，可自行按 AGENTS.md 写入，或交由 update（选项 D）完成，避免重复建页。
 
 ### 步骤 7：记录操作日志
 
@@ -129,7 +129,7 @@ user-invocable: true
 - **缺口**: 无 | 已核对原文无相关内容 | 已调用 update 补编 [[PageName]]
 ```
 
-格式必须完全遵循 CLAUDE.md 中的示例风格。
+格式必须完全遵循 AGENTS.md 中的示例风格。
 
 ---
 
@@ -147,7 +147,7 @@ user-invocable: true
 
 - [[wiki/index.md]] — 全局索引入口
 - [[wiki/log.md]] — 操作日志
-- [[CLAUDE.md]] — Wiki 架构总规范
+- [[AGENTS.md]] — Wiki 架构总规范
 - [[update]] — 定向补编写入（本技能在原文确认后调用）
 - [[ingest]] — 初次全量编译（不读 archive 正文）
 - [[lint]] — 结构健康检查

@@ -30,22 +30,20 @@
 │   ├── 🗺️ domains/              ← 领域层：主题综合导航页（聚合概念/实体/claim）
 │   └── 💎 syntheses/            ← 综合层：针对复杂提问生成的深度研究报告 
 │
-├── 🤖 CLAUDE.md                 ← 全局心智规范：定义语言协议、读写权限与 Wiki Schema
+├── 🤖 AGENTS.md                 ← 全局心智规范：定义语言协议、读写权限与 Wiki Schema（跨工具）
 │
-└── ⚙️ .claude/                  ← Claude Code 官方配置目录
+└── ⚙️ .opencode/                ← Agent 配置目录（skills 等）
     └── 🛠️ skills/               ← Agent Skill中心
         ├── ⚙️ ingest/           ← 自定义：编译收件箱 raw 文件到 wiki，并执行 09-archive 归档
         ├── 🔎 query/            ← 自定义：检索 wiki；缺口时读 archive 核对，有原文则调用 update
         ├── 🔧 update/           ← 自定义：按原文证据定向补编 wiki（由 query 或用户触发）
-        ├── 🩺 lint/             ← 自定义：知识体检，修复死链、补充 index、发现认知冲突
-        ├── 🔌 obsidian-cli/     ← Obsidian官方：调用 Obsidian 原生 API 进行检索、打开页面
-        └── 🪄 defuddle/         ← Obsidian官方：将网页 URL 自动清理并转化为 Markdown 存入 raw/
+        └── 🩺 lint/             ← 自定义：知识体检，修复死链、补充 index、发现认知冲突
 ```
 
 
 ## 使用方式
 
-在 Obsidian 中打开本 vault，使用Claude Code或者Claudian插件执行操作。
+在 Obsidian 中打开本 vault，配合支持 `AGENTS.md` 与 `.opencode/skills/` 的 Agent（如 OpenCode / Claude Code 等，按工具约定加载）执行操作。
 
 ### 常用命令
 

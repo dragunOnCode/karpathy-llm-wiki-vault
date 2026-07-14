@@ -97,7 +97,7 @@
    如果新摄入的知识与旧知识冲突，不要静默覆盖。在页面中新建 `## 知识冲突` 区块，将两种说法都保留并做对比。
 
 # 工作流指令说明 (Workflows / Skills)
-当被要求执行以下操作时，请遵循核心逻辑（由 `.claude/skills/` 下对应技能细则接管）：
+当被要求执行以下操作时，请遵循核心逻辑（由 `.opencode/skills/` 下对应技能细则接管）：
 
 - `/ingest <路径>`：读取指定的 `raw/` **inbox** 文件（排除 `09-archive/`），提炼 Sources / Claims / Entities / Concepts，并视需要更新 Domains；归档后把 `sources:` 更新为 archive 路径。必须更新 index 和 log。本流程不读 archive 正文。
 - `/query <问题>`：通过读取 `wiki/index.md` 寻找相关 Sources / Claims / Entities / Concepts / Domains / Syntheses 并回答。若 wiki 有缺口，允许读 `raw/09-archive/` 核对原文：无则声明未找到；有则调用 `/update` 补编后再答。

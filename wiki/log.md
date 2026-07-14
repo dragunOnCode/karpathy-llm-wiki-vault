@@ -138,3 +138,7 @@
 - **变更**: 更新 [[CLAUDE.md]] 与 ingest/query/update/lint skills；新增目录 `wiki/claims/`、`wiki/domains/`；更新 [[index.md]] 分类骨架
 - **说明**: Claim 须一句话摘要+内容+Source 回链+出处锚点；Domain 须一句话摘要+概述+概念/实体/claim 双链
 - **冲突**: 无
+
+## [2026-07-14] sync | 重命名配置入口：CLAUDE.md→AGENTS.md，.claude→.opencode
+- **变更**: 全局规范改为 [[AGENTS.md]]；skills 目录迁至 `.opencode/skills/`；同步 README 与各 skill 内引用
+- **冲突**: 无
