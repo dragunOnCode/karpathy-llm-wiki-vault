@@ -1,6 +1,6 @@
 ---
 name: query
-description: 在本地 Wiki 知识库中回答用户提问。当用户使用 /query 命令、或用自然语言询问关于"我的笔记/历史决定/过往笔记/知识库"中的内容时调用。必须先读取 wiki/index.md 定位相关页面，再深度阅读，最后以双链引用格式回答。禁止凭模型记忆回答。若 wiki 不足以回答，允许读取 raw/09-archive/ 核对原文：无原文则声明未找到；有原文则调用 update 技能做定向补编。
+description: 在本地 Wiki 知识库中回答用户提问。当用户使用 /query 命令、或用自然语言询问关于"我的笔记/历史决定/过往笔记/知识库"中的内容时调用。必须先读取 wiki/index.md 定位相关页面（Sources/Claims/Entities/Concepts/Domains/Syntheses），再深度阅读，最后以双链引用格式回答。禁止凭模型记忆回答。若 wiki 不足以回答，允许读取 raw/09-archive/ 核对原文：无原文则声明未找到；有原文则调用 update 技能做定向补编。
 user-invocable: true
 ---
 
@@ -46,9 +46,11 @@ user-invocable: true
 
 在 index.md 中定位与问题相关的：
 
+- Sources（摘要）
+- Claims（关键判断/结论）— 优先用于「原文怎么说 / 有何结论」类问题
 - Entities（实体）
 - Concepts（概念）
-- Sources（摘要）
+- Domains（领域综合）— 优先用于「某主题全貌 / 相关知识地图」类问题
 - Syntheses（综合）
 
 ### 步骤 2：深度阅读目标文件
@@ -64,7 +66,7 @@ user-invocable: true
 | wiki 已覆盖 | → 步骤 5 综合与回答 |
 | wiki 未覆盖或部分覆盖（缺口） | → 步骤 4 核对 archive |
 
-**缺口典型信号**：相关摘要过粗、概念页无该边界/异常处理、index 无对应条目、页面明确未提及用户所问细节。
+**缺口典型信号**：相关摘要过粗、缺少可引用的 Claim、概念页无该边界/异常处理、Domain 未挂相关断言、index 无对应条目、页面明确未提及用户所问细节。
 
 ### 步骤 4：核对 archive（本技能持有读权限）
 

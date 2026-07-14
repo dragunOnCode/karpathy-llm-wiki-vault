@@ -1,13 +1,13 @@
 ---
 name: lint
-description: 知识库全局健康度检查。扫描 wiki/ 目录，检测死链（页面引用不存在的双链）、孤儿页面（无任何页面引用它）、未同步索引（文件存在但未在 index.md 注册）、过时/死 sources 路径和知识冲突。当用户输入 /lint、/scan、/health 或要求“检查知识库状态”、“检查健康”时调用。不读取 raw/09-archive/ 正文。
+description: 知识库全局健康度检查。扫描 wiki/ 目录，检测死链、孤儿页面、未同步索引、过时/死 sources 路径、不合格 Claim（缺出处锚点或未回链 Source）、空关联 Domain，以及知识冲突。当用户输入 /lint、/scan、/health 或要求“检查知识库状态”、“检查健康”时调用。不读取 raw/09-archive/ 正文。
 user-invocable: true
 ---
 
 # lint 技能：知识图谱健康巡检
 
 ## 核心目标
-将软件工程中的“静态代码分析”引入知识管理。定期运行此 skill，找出知识库长期演进中产生的：死链、孤岛、未同步索引、过时 provenance、认知冲突。
+将软件工程中的“静态代码分析”引入知识管理。定期运行此 skill，找出知识库长期演进中产生的：死链、孤岛、未同步索引、过时 provenance、Claim/Domain 契约违规、认知冲突。
 
 ## 触发条件
 - 用户输入 `/lint`
@@ -42,7 +42,21 @@ user-invocable: true
 3. 若路径指向 inbox（如 `raw/01-articles/`）且不存在，但 `raw/09-archive/` 下存在同名文件 → **过时路径**（黄灯）
 4. 若 inbox 与 archive 均不存在 → **死路径**（红灯）
 
-### 第 5 步：收件箱积压检查（可选）
+### 第 5 步：Claims / Domains 契约检查
+对 `wiki/claims/` 下每个页面：
+1. `type` 应为 `claim`
+2. frontmatter `sources:` 必须非空
+3. 正文必须含 `## 出处锚点`
+4. `## 关联连接` 中必须至少有一个 `[[摘要-...]]`（或可解析为 source 类型的双链）
+5. 任一缺失 → **不合格 Claim**（红灯）
+
+对 `wiki/domains/` 下每个页面：
+1. `type` 应为 `domain`
+2. 正文必须含 `## 一句话摘要`（或等价首段定位）与 `## 概述`
+3. `## 关联连接` 不得为空；建议至少链接 Concepts / Entities / Claims 之一
+4. 关联区为空 → **空 Domain**（红灯）；缺概述 → 黄灯
+
+### 第 6 步：收件箱积压检查（可选）
 - 可统计 `raw/` 非 `09-archive/` 下是否仍有待 ingest 文件
 - 不读取 `09-archive/` 正文
 
@@ -65,11 +79,14 @@ user-invocable: true
 - **发现 N 个死链**：[来源页面] → [[不存在的目标页面]]
 - **存在 N 个未解决的知识冲突**：[页面名称]
 - **发现 N 个死 sources 路径**：[页面] → 路径（inbox/archive 均不存在）
+- **发现 N 个不合格 Claim**：[缺出处锚点 / 未回链 Source / sources 为空]
+- **发现 N 个空 Domain**：[关联连接为空]
 
 ### 🛠️ 下一步行动
 1. 是否需要自动修复未同步索引？
 2. 是否需要将过时 sources 路径改写为 raw/09-archive/…？
-3. 是否需要针对知识冲突进行重新推演？
+3. 是否需要补全不合格 Claim 的锚点与 Source 回链？
+4. 是否需要针对知识冲突进行重新推演？
 ```
 
 ## 硬约束
