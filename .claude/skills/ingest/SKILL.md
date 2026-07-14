@@ -1,6 +1,6 @@
 ---
 name: ingest
-description: 将 raw/ 目录下的原始资料编译到 wiki/ 中。处理完成后，将源文件自动移动到 raw/09-archive/ 归档。支持 `/ingest` (扫描 raw/ 下所有未归档文件) 或 `/ingest <path>` (处理指定文件)。当用户提到"摄取"、"导入"、"收入"资料，或要求将文件加入知识库时，也应该触发此技能。绝对忽略 raw/09-archive/ 目录。
+description: 将 raw/ 目录下的原始资料编译到 wiki/ 中。处理完成后，将源文件自动移动到 raw/09-archive/ 归档，并把 wiki 页 sources: 更新为归档后路径。支持 `/ingest` (扫描 raw/ 下所有未归档文件) 或 `/ingest <path>` (处理指定文件)。当用户提到"摄取"、"导入"、"收入"资料，或要求将文件加入知识库时，也应该触发此技能。将 09-archive/ 视为已处理区：禁止对其做全量再 ingest，本技能不读取 archive 正文（缺口补编由 query/update 负责）。
 user-invocable: true
 ---
 
@@ -14,7 +14,7 @@ user-invocable: true
 - `raw/01-articles/` — 网页剪藏的 Markdown 文章
 - `raw/02-papers/` — 论文和 PDF 文献
 - `raw/03-transcripts/` — 视频转录文案
-- `raw/09-archive/` — **已处理文件的归档目录，禁止读取**
+- `raw/09-archive/` — **已处理文件的归档目录**（本技能将其排除在 inbox 扫描之外，不读其正文；核对与补编见 query / update）
 - `wiki/sources/` — 资料摘要
 - `wiki/entities/` — 实体（人物、公司、工具、产品）
 - `wiki/concepts/` — 概念（框架、方法论、理论）
@@ -52,12 +52,15 @@ user-invocable: true
 title: "摘要-文件slug"
 type: source
 tags: [来源, 原始文件]
-sources: [raw/01-articles/xxx.md]
+sources: [raw/09-archive/xxx.md]
 last_updated: YYYY-MM-DD
 ---
 
 ## 核心摘要
 [3-5句话的核心总结]
+
+## 边界与异常（可选但推荐）
+[原文中的约束、失败模式、反模式、例外条件；若原文无则写「原文未提及」]
 
 ## 关联连接
 - [[EntityName]] — 关联实体
@@ -65,6 +68,8 @@ last_updated: YYYY-MM-DD
 ```
 
 文件名使用 kebab-case：`摘要-{文件slug}.md`
+
+> 创建摘要时可先写 inbox 路径；**步骤 6 归档完成后，必须把本页及关联实体/概念页的 `sources:` 改为 `raw/09-archive/...` 最终路径。**
 
 ### 步骤 4：知识网络化（实体/概念页面）
 
@@ -117,15 +122,17 @@ last_updated: YYYY-MM-DD
 - **冲突**: 无 (或: 冲突 [[ConflictingPage]], 已暂停等待决策)
 ```
 
-### 步骤 6：归档源文件
+### 步骤 6：归档源文件并修正 provenance
 
-在确认以下全部完成后，将源文件移动到 `raw/09-archive/`目录：
+在确认以下全部完成后，将源文件移动到 `raw/09-archive/` 目录：
 - sources 页面已创建
 - 实体/概念页面已创建或更新
 - index.md 已更新
 - log.md 已更新
 
-**绝对禁止修改源文件内部的文字。**
+移动完成后：
+1. 将本次涉及的所有 wiki 页 frontmatter 中的 `sources:` 更新为 `raw/09-archive/<文件名>`
+2. **绝对禁止修改源文件内部的文字**（只允许移动文件、更新 wiki 元数据）
 
 ## 冲突处理流程
 
@@ -139,9 +146,17 @@ last_updated: YYYY-MM-DD
    - C) 放弃本次 ingest
 4. **继续**：根据用户选择继续或终止
 
+## 与其他技能的关系
+
+- 本技能：inbox → 初次全量编译 → 归档（**不读 archive 正文**）
+- [[query]]：检索 wiki；缺口时可读 archive 核对
+- [[update]]：在原文确认后定向补编 wiki（可读 archive 单篇）
+- [[lint]]：结构健康检查（不读 archive 正文）
+
 ## 注意事项
 
-- 绝对不读取 `raw/09-archive/` 下的任何文件
+- **禁止**将 `raw/09-archive/` 当作 inbox 扫描或对其做全量再 ingest
+- **本技能不读取** `09-archive/` 正文；缺口补编交给 query → update
 - 所有 wiki 页面必须包含 `## 关联连接` 区域，不能产生孤岛页面
 - 使用简体中文编写所有内容
 - 实体命名使用 TitleCase，概念和来源使用 kebab-case
