@@ -1,0 +1,20 @@
+{
+  "collection": "Public documentation governance trial",
+  "retrieved_at": "2026-07-15",
+  "documents": [
+    {
+      "title": "KEP-3140: TimeZone support in CronJob",
+      "document_kind": "design-doc",
+      "page_type": "design-proposal",
+      "source_url": "https://raw.githubusercontent.com/kubernetes/enhancements/af13af85b7df7a4d6e48cb07c477351d9eb4e13c/keps/sig-apps/3140-TimeZone-support-in-CronJob/README.md",
+      "source_web_url": "https://github.com/kubernetes/enhancements/blob/af13af85b7df7a4d6e48cb07c477351d9eb4e13c/keps/sig-apps/3140-TimeZone-support-in-CronJob/README.md",
+      "source_revision": "af13af85b7df7a4d6e48cb07c477351d9eb4e13c",
+      "license_reference": "https://github.com/kubernetes/enhancements/blob/af13af85b7df7a4d6e48cb07c477351d9eb4e13c/LICENSE",
+      "classification": "public-trial",
+      "file": "kep-3140-cronjob-timezone-support.md",
+      "bytes": 16817,
+      "lines": 417,
+      "sha256": "797e17a359d28bdc63cf62c9e3bd60410dc01520e905261a9630ecdd0bcb9b17"
+    }
+  ]
+}

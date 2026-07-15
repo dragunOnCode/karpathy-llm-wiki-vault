@@ -1,0 +1,34 @@
+{
+  "collection": "Public documentation governance trial",
+  "retrieved_at": "2026-07-15",
+  "documents": [
+    {
+      "title": "Debug Running Pods",
+      "document_kind": "operation-guide",
+      "page_type": "troubleshooting-procedure",
+      "source_url": "https://raw.githubusercontent.com/kubernetes/website/593e7df87a815198689cbd9ccf9b729acad45a77/content/en/docs/tasks/debug/debug-application/debug-running-pod.md",
+      "source_web_url": "https://github.com/kubernetes/website/blob/593e7df87a815198689cbd9ccf9b729acad45a77/content/en/docs/tasks/debug/debug-application/debug-running-pod.md",
+      "source_revision": "593e7df87a815198689cbd9ccf9b729acad45a77",
+      "license_reference": "https://github.com/kubernetes/website/blob/593e7df87a815198689cbd9ccf9b729acad45a77/LICENSE",
+      "classification": "public-trial",
+      "file": "kubernetes-debug-running-pods.md",
+      "bytes": 28330,
+      "lines": 824,
+      "sha256": "ec96ce1a6c370020a9162cae98aba5b1a04113365815613ecdb1f658cfa2e08f"
+    },
+    {
+      "title": "Troubleshooting GitLab Runner",
+      "document_kind": "operation-guide",
+      "page_type": "troubleshooting-runbook",
+      "source_url": "https://gitlab.com/api/v4/projects/gitlab-org%2Fgitlab-runner/repository/files/docs%2Ffaq%2F_index.md/raw?ref=97df46cbb5e04977a0be5ff7ee8803c7b3b9956c",
+      "source_web_url": "https://gitlab.com/gitlab-org/gitlab-runner/-/blob/97df46cbb5e04977a0be5ff7ee8803c7b3b9956c/docs/faq/_index.md",
+      "source_revision": "97df46cbb5e04977a0be5ff7ee8803c7b3b9956c",
+      "license_reference": "https://gitlab.com/gitlab-org/gitlab-runner/-/blob/97df46cbb5e04977a0be5ff7ee8803c7b3b9956c/LICENSE",
+      "classification": "public-trial",
+      "file": "gitlab-runner-troubleshooting.md",
+      "bytes": 23203,
+      "lines": 508,
+      "sha256": "64caceffe137bb46601bafe0f4b53824736e151f78bea4a1aaa7228fb737ca50"
+    }
+  ]
+}

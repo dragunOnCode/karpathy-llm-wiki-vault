@@ -1,6 +1,6 @@
 ---
 name: ingest
-description: 将 raw/ 目录下的原始资料编译到 wiki/ 中（Sources、Claims、Entities、Concepts，并视需要更新 Domains）。处理完成后，将源文件自动移动到 raw/09-archive/ 归档，并把 wiki 页 sources: 更新为归档后路径。支持 `/ingest` (扫描 raw/ 下所有未归档文件) 或 `/ingest <path>` (处理指定文件)。当用户提到"摄取"、"导入"、"收入"资料，或要求将文件加入知识库时，也应该触发此技能。将 09-archive/ 视为已处理区：禁止对其做全量再 ingest，本技能不读取 archive 正文（缺口补编由 query/update 负责）。
+description: 将 raw/ 目录下的原始资料编译到 wiki/ 中（Sources、Claims、Entities、Concepts，并视需要更新 Domains）。处理完成后，将源文件自动移动到 raw/09-archive/ 归档，并把 wiki 页 sources: 更新为归档后路径。支持 `/ingest` (扫描 raw/ 下所有未归档文件)、`/ingest <path>` (处理指定文件) 和 `/ingest --light <path>` (只处理指定文件的轻量编译)。当用户提到"摄取"、"导入"、"收入"资料，或要求将文件加入知识库时，也应该触发此技能。将 09-archive/ 视为已处理区：禁止对其做全量再 ingest，本技能不读取 archive 正文（缺口补编由 query/update 负责）。
 user-invocable: true
 ---
 
@@ -8,7 +8,7 @@ user-invocable: true
 
 ## 核心工作流：Inbox & Archive
 
-你正在维护一个 **LLM Wiki**（Obsidian 知识库）。`raw/` 目录是"待处理收件箱"，`wiki/` 是"编译输出层"。
+你正在维护一个 **LLM Wiki**（Obsidian 知识库，知识库的主题不固定，但是以LLM Wiki的形式承载）。`raw/` 目录是"待处理收件箱"，`wiki/` 是"编译输出层"。
 
 **目录结构约定：**
 - `raw/01-articles/` — 网页剪藏的 Markdown 文章
@@ -26,7 +26,27 @@ user-invocable: true
 
 1. **用户执行 `/ingest`**：扫描 `raw/` 所有子目录（排除 `09-archive/`），找出待处理文件。
 2. **用户执行 `/ingest <path>`**：仅处理指定文件。
-3. **隐式触发**：用户说"把这个资料摄入知识库"、"导入这篇文章"时，自动执行 ingest。
+3. **用户执行 `/ingest --light <path>`**：进入轻量模式，仅处理指定文件；不得扫描整个 inbox，也不得读取 `09-archive/` 正文。
+4. **隐式触发**：用户说"把这个资料摄入知识库"、"导入这篇文章"时，自动执行 ingest；若用户明确说"轻量摄取"、"轻量导入"、"只建 Source"或"不要展开太多 Claim"，视为 `/ingest --light <path>`。
+
+## 模式选择
+
+### 普通模式
+
+普通模式沿用完整编译流程：为资料提炼 Source、必要的 Claims、Entities、Concepts，并视需要更新 Domains。适用于高价值资料、主题初次建库、或用户明确要求完整结构化的场景。
+
+### 轻量模式
+
+轻量模式用于减少上下文和维护成本，尤其适合企业内部多来源资料试点、同一产品手册拆章、操作指导书补充项、以及只需要先建立可追溯 Source 的资料。
+
+轻量模式必须遵守：
+
+1. 每篇 raw 必须创建或更新一个 Source 摘要页。
+2. Claim 只在原文存在独立、可核验、可复用的规则、限制、结论、设计取舍或操作风险时创建；不设每篇数量下限，允许零 Claim。
+3. Concept、Entity、Domain 只在存在新对象、已有页得到实质补充，或需要跨资料导航时创建或更新。
+4. 资料只是同一手册的一章且未带来新结论时，仅创建 Source，并把它链接到已有相关页面。
+5. 所有新增 Claim 必须保留章节、页码或关键原句等出处锚点。
+6. 轻量模式不得为了页面数量而创建空泛 Claim、同义 Concept、同义 Entity 或同义 Domain。
 
 ## 编译流水线
 
@@ -41,7 +61,7 @@ user-invocable: true
 
 从源文件中提取：
 - **核心主旨**：这段资料讲什么（1-2句话）
-- **Claims（关键判断）**：原文中可独立成立的结论/断言（优先可检验、可被引用的句子级判断；每篇通常 3–10 条，宁缺毋滥）
+- **Claims（关键判断）**：原文中可独立成立的结论/断言（优先可检验、可被引用的句子级判断；普通模式每篇通常 3–10 条，宁缺毋滥；轻量模式不设数量下限）
 - **实体**：人物、公司、工具、产品等具体名词
 - **概念**：框架、方法论、理论等抽象名词
 - **所属领域**：该资料主要归属哪些 Domain（已有则挂接；明显成体系且缺失时可新建）
@@ -64,6 +84,11 @@ last_updated: YYYY-MM-DD
 ## 核心摘要
 [3-5句话的核心总结]
 
+## 资料定位（轻量模式推荐）
+- **资料集**: <document_set_id 或未标注>
+- **文档类型**: <product_manual | design_spec | runbook | other>
+- **权威等级**: <official | draft | experience | unknown>
+
 ## 边界与异常（可选但推荐）
 [原文中的约束、失败模式、反模式、例外条件；若原文无则写「原文未提及」]
 
@@ -77,6 +102,11 @@ last_updated: YYYY-MM-DD
 文件名使用 kebab-case：`摘要-{文件slug}.md`
 
 > 创建摘要时可先写 inbox 路径；**步骤 7 归档完成后，必须把本页及关联页的 `sources:` 改为 `raw/09-archive/...` 最终路径。**
+
+**轻量模式 Source 要求：**
+- `## 核心摘要` 限制为 1-3 条短 bullet，优先说明本资料回答什么问题、边界是什么、何时需要回读原文。
+- 必须写 `## 资料定位`；没有 manifest 字段时用「未标注」或 `unknown`，不要猜测。
+- 若本资料未产生 Claim，也必须在 `## 关联连接` 中链接至少一个已有相关页面，或链接到合适的 Domain；确实没有现成页面时，创建最小必要 Domain。
 
 ### 步骤 4：创建 Claims（关键判断）
 
@@ -113,6 +143,7 @@ last_updated: YYYY-MM-DD
 2. **必须**有 `## 出处锚点`；无法精确定位时写明「整篇主旨性结论」并保留 Source 回链
 3. 文件名：`claim-{简短语义slug}.md`（kebab-case）
 4. 若与已有 Claim 冲突 → **暂停**，走冲突处理流程（勿静默覆盖）
+5. 轻量模式下，只有独立、可核验、可复用的规则、限制、结论、设计取舍或操作风险才创建 Claim；背景介绍、步骤标题、泛泛功能描述不创建 Claim
 
 ### 步骤 5：知识网络化（实体/概念页面）
 
@@ -126,6 +157,7 @@ last_updated: YYYY-MM-DD
 1. 页面不存在 → 按照 AGENTS.md 的 Frontmatter 规范创建新页面
 2. 页面已存在 → 读取现有内容，**增量合并**新信息
 3. **发现冲突** → **立即暂停**，向用户报告冲突内容，询问处理方式后再继续
+4. 轻量模式下，只在新增对象、实质补充已有页、或跨资料导航确有需要时创建/更新；不要为同义词、一次性章节标题或纯目录项创建页面
 
 **页面模板：**
 
@@ -158,6 +190,7 @@ last_updated: YYYY-MM-DD
 1. Domain 不存在且主题已成体系 → 新建 `wiki/domains/{DomainName}.md`
 2. Domain 已存在 → 增量把本源相关的 Concepts / Entities / Claims / Source 摘要挂进 `## 关联连接`
 3. 不把 Domain 写成第二份长摘要；概述保持短，细节留给 Claim/Concept
+4. 轻量模式下，优先更新已有 Domain；只有资料集合已经形成可复用导航主题时才新建 Domain
 
 **Domain 模板：**
 
@@ -241,5 +274,11 @@ last_updated: YYYY-MM-DD
 - 所有 wiki 页面必须包含 `## 关联连接` 区域，不能产生孤岛页面
 - Claim **禁止**无 Source 回链或无出处锚点
 - Domain **禁止**关联区完全为空
+- 轻量模式的合法输出包括：Source + 零 Claim；Source + 少量 Claim；Source + 更新已有 Concept/Entity/Domain
+- 轻量模式的典型判断：
+  1. 一章纯背景说明：Source，零 Claim。
+  2. 一章新增产品限制：Source，加一个 Claim，更新已有产品页。
+  3. 完整设计文档有多个方案取舍：Source，必要的 Claim，更新 Concept/Domain。
+  4. 操作指导书仅补充已有 runbook：Source，更新已有页面，不新建同义 Domain。
 - 使用简体中文编写所有内容
 - 实体/概念/领域命名使用 TitleCase；来源/断言/综合使用 kebab-case

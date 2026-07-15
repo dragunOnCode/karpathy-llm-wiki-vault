@@ -60,7 +60,7 @@
 - Consumes: `raw/09-archive/` 中的 MacBook 手册章节，以及 `raw/04-design-docs/`、`raw/05-operation-guides/` 的公开试点资料。
 - Produces: 每题唯一 `question_id`，供直接 raw、检索型知识库和 LLM Wiki Lite 三种运行记录共用。
 
-- [ ] **Step 1: 创建固定问题集文档**
+- [x] **Step 1: 创建固定问题集文档**
 
 在 `docs/evals/llm-wiki-pilot-questions.md` 写入以下结构，并至少为每类资料各准备 5 题：
 
@@ -84,7 +84,7 @@
 - 可接受来源：<raw 路径和章节锚点>
 ```
 
-- [ ] **Step 2: 创建空结果表并锁定字段**
+- [x] **Step 2: 创建空结果表并锁定字段**
 
 创建 `docs/evals/llm-wiki-pilot-results.csv`，首行必须为：
 
@@ -110,11 +110,11 @@ run_id,question_id,mode,answer_correctness,source_anchor,risk_completeness,input
 - Consumes: `/ingest --light <path>` 或等价的明确“轻量摄取”指令。
 - Produces: 每篇 raw 一个 Source；零个或多个 Claim、Concept、Entity、Domain 的新增或增量更新；与普通 `/ingest` 完全隔离。
 
-- [ ] **Step 1: 写出轻量模式的触发定义**
+- [x] **Step 1: 写出轻量模式的触发定义**
 
 在技能的触发逻辑中增加：`/ingest --light <path>` 仅处理指定来源，且不得扫描整个 inbox。未指定 `--light` 时保留原有行为。
 
-- [ ] **Step 2: 将轻量模式的产物规则写入技能**
+- [x] **Step 2: 将轻量模式的产物规则写入技能**
 
 在技能中加入以下可执行规则：
 
@@ -127,7 +127,7 @@ run_id,question_id,mode,answer_correctness,source_anchor,risk_completeness,input
 5. 所有新增 Claim 必须保留章节、页码或关键原句等出处锚点。
 ```
 
-- [ ] **Step 3: 补充轻量模式的 Source 模板**
+- [x] **Step 3: 补充轻量模式的 Source 模板**
 
 将 `## 核心摘要` 限定为 1-3 条短 bullet，并新增以下可选字段：
 
@@ -138,7 +138,7 @@ run_id,question_id,mode,answer_correctness,source_anchor,risk_completeness,input
 - **权威等级**: <official | draft | experience | unknown>
 ```
 
-- [ ] **Step 4: 手工验收技能文本**
+- [x] **Step 4: 手工验收技能文本**
 
 检查以下情形在文档规则中都有明确输出：
 
