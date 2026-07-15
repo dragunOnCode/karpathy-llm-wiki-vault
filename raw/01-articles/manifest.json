@@ -1,0 +1,327 @@
+{
+  "product": "MacBook Air",
+  "guide": "MacBook Air 入门指南",
+  "language": "zh-CN",
+  "source": "Apple Support",
+  "start_url": "https://support.apple.com/zh-cn/guide/macbook-air/welcome/mac",
+  "source_version_label": "2026—macOS Tahoe 26",
+  "source_version_url": "https://support.apple.com/zh-cn/guide/macbook-air/welcome/2026/mac/26",
+  "retrieved_at": "2026-07-10",
+  "files": [
+    {
+      "title": "MacBook Air",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/welcome/mac",
+      "file": "001-MacBook-Air.md",
+      "characters": 1830
+    },
+    {
+      "title": "浏览 MacBook Air",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd7e765329d/mac",
+      "file": "002-浏览-MacBook-Air.md",
+      "characters": 2144
+    },
+    {
+      "title": "适用于 MacBook Air 的妙控键盘",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdab672d5e9/mac",
+      "file": "003-适用于-MacBook-Air-的妙控键盘.md",
+      "characters": 5882
+    },
+    {
+      "title": "MacBook Air 触控板",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdbb563a1bc/mac",
+      "file": "004-MacBook-Air-触控板.md",
+      "characters": 3092
+    },
+    {
+      "title": "给 MacBook Air 电池充电",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdbc13fd966/mac",
+      "file": "005-给-MacBook-Air-电池充电.md",
+      "characters": 3945
+    },
+    {
+      "title": "设置 MacBook Air",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd831707cb3/mac",
+      "file": "006-设置-MacBook-Air.md",
+      "characters": 2509
+    },
+    {
+      "title": "设置账户",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd1c52f9d30/mac",
+      "file": "007-设置账户.md",
+      "characters": 2697
+    },
+    {
+      "title": "Mac 新手？",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd1f14ec646/mac",
+      "file": "008-Mac-新手.md",
+      "characters": 5622
+    },
+    {
+      "title": "个性化 Mac 的外观",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd2add7474b/mac",
+      "file": "009-个性化-Mac-的外观.md",
+      "characters": 3190
+    },
+    {
+      "title": "开始使用 MacBook Air 必备 App",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd787343df7/mac",
+      "file": "010-开始使用-MacBook-Air-必备-App.md",
+      "characters": 4403
+    },
+    {
+      "title": "从 Windows 转而使用 Mac？",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdd88fdad7a/mac",
+      "file": "011-从-Windows-转而使用-Mac.md",
+      "characters": 4776
+    },
+    {
+      "title": "MacBook Air 最佳提示、技巧和键盘快捷键",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apde5ace2f6f/mac",
+      "file": "012-MacBook-Air-最佳提示、技巧和键盘快捷键.md",
+      "characters": 3541
+    },
+    {
+      "title": "开始使用辅助功能",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd4c143b3c5/mac",
+      "file": "013-开始使用辅助功能.md",
+      "characters": 1885
+    },
+    {
+      "title": "将外接显示器连接到 MacBook Air",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd8cdd74f57/mac",
+      "file": "014-将外接显示器连接到-MacBook-Air.md",
+      "characters": 2488
+    },
+    {
+      "title": "将配件连接到 MacBook Air",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdbd44531c5/mac",
+      "file": "015-将配件连接到-MacBook-Air.md",
+      "characters": 2120
+    },
+    {
+      "title": "适用于 MacBook Air 的转换器和连接线",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd46ed8a373/mac",
+      "file": "016-适用于-MacBook-Air-的转换器和连接线.md",
+      "characters": 1839
+    },
+    {
+      "title": "将数据迁移到新 MacBook Air",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apda75cd668e/mac",
+      "file": "017-将数据迁移到新-MacBook-Air.md",
+      "characters": 2078
+    },
+    {
+      "title": "MacBook Air 的安全性功能",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdcf567823b/mac",
+      "file": "018-MacBook-Air-的安全性功能.md",
+      "characters": 682
+    },
+    {
+      "title": "备份和恢复 MacBook Air",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdc6980d3be/mac",
+      "file": "019-备份和恢复-MacBook-Air.md",
+      "characters": 1633
+    },
+    {
+      "title": "Mac 资源、服务和支持",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd7bd1310b3/mac",
+      "file": "020-Mac-资源、服务和支持.md",
+      "characters": 3159
+    },
+    {
+      "title": "Mac 的重要安全性信息",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd9b8f7aa11/mac",
+      "file": "021-Mac-的重要安全性信息.md",
+      "characters": 6019
+    },
+    {
+      "title": "Mac 的重要操作信息",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd876e1a2ea/mac",
+      "file": "022-Mac-的重要操作信息.md",
+      "characters": 1273
+    },
+    {
+      "title": "Mac 人体工程学",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd8a47fddd1/mac",
+      "file": "023-Mac-人体工程学.md",
+      "characters": 837
+    },
+    {
+      "title": "监管信息",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd20340ed97/mac",
+      "file": "024-监管信息.md",
+      "characters": 458
+    },
+    {
+      "title": "FCC 合规声明",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd0a6c2b3db/mac",
+      "file": "025-FCC-合规声明.md",
+      "characters": 870
+    },
+    {
+      "title": "加拿大 ISED 合规声明",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd8199924f0/mac",
+      "file": "026-加拿大-ISED-合规声明.md",
+      "characters": 1867
+    },
+    {
+      "title": "微功率短距离设备声明",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd83d82c79a/mac",
+      "file": "027-微功率短距离设备声明.md",
+      "characters": 562
+    },
+    {
+      "title": "ENERGY STAR® 合规声明",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd061664745/mac",
+      "file": "028-ENERGY-STAR®-合规声明.md",
+      "characters": 655
+    },
+    {
+      "title": "Apple 和环境",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apdeb369448c/mac",
+      "file": "029-Apple-和环境.md",
+      "characters": 115
+    },
+    {
+      "title": "处理和回收信息",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd91eb694f4/mac",
+      "file": "030-处理和回收信息.md",
+      "characters": 2111
+    },
+    {
+      "title": "软件许可协议",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd6e208e1f7/mac",
+      "file": "031-软件许可协议.md",
+      "characters": 99
+    },
+    {
+      "title": "版权和商标",
+      "page_type": "topic",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/apd7721c83d4/mac",
+      "file": "032-版权和商标.md",
+      "characters": 1234
+    },
+    {
+      "title": "12MP Center Stage 摄像头",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apda5f469692/2026/mac/26",
+      "file": "aside-001-12MP-Center-Stage-摄像头.md",
+      "characters": 103
+    },
+    {
+      "title": "扬声器",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd152e4aa65/2026/mac/26",
+      "file": "aside-002-扬声器.md",
+      "characters": 186
+    },
+    {
+      "title": "麦克风",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd8a8f14de5/2026/mac/26",
+      "file": "aside-003-麦克风.md",
+      "characters": 66
+    },
+    {
+      "title": "触控 ID（电源）按钮",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd69bcae5e2/2026/mac/26",
+      "file": "aside-004-触控-ID(电源)按钮.md",
+      "characters": 92
+    },
+    {
+      "title": "力度触控板",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd0bb9667e2/2026/mac/26",
+      "file": "aside-005-力度触控板.md",
+      "characters": 64
+    },
+    {
+      "title": "MagSafe 3 端口",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apdbf5f27502/2026/mac/26",
+      "file": "aside-006-MagSafe-3-端口.md",
+      "characters": 120
+    },
+    {
+      "title": "雷雳 4 (USB-C) 端口",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd663f9e143/2026/mac/26",
+      "file": "aside-007-雷雳-4-(USB-C)-端口.md",
+      "characters": 248
+    },
+    {
+      "title": "3.5 毫米音频插孔",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd0bb27997d/2026/mac/26",
+      "file": "aside-008-3.5-毫米音频插孔.md",
+      "characters": 77
+    },
+    {
+      "title": "系统设置",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd796e4d5da/2026/mac/26",
+      "file": "aside-009-系统设置.md",
+      "characters": 364
+    },
+    {
+      "title": "打开“电池”设置",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd1c72f424f/2026/mac/26",
+      "file": "aside-010-打开“电池”设置.md",
+      "characters": 58
+    },
+    {
+      "title": "菜单栏",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apdf23afb33c/2026/mac/26",
+      "file": "aside-011-菜单栏.md",
+      "characters": 46
+    },
+    {
+      "title": "App Store",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apdc888425fa/2026/mac/26",
+      "file": "aside-012-App-Store.md",
+      "characters": 234
+    },
+    {
+      "title": "Apple 账户",
+      "page_type": "aside",
+      "source_url": "https://support.apple.com/zh-cn/guide/macbook-air/aside/apd74003fe84/2026/mac/26",
+      "file": "aside-013-Apple-账户.md",
+      "characters": 558
+    }
+  ]
+}
