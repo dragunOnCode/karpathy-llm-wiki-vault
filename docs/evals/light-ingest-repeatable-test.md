@@ -38,10 +38,10 @@ raw/05-operation-guides/gitlab-runner-troubleshooting.md
 scripts/evals/prepare-light-ingest-eval.sh
 ```
 
-脚本会输出一次性 worktree 路径、base commit 和 fixture。默认路径通常是：
+脚本会输出一次性 worktree 路径、base commit 和 fixture。默认路径在当前仓库内：
 
 ```text
-${TMPDIR:-/tmp}/karpathy-llm-wiki-vault-light-ingest-eval
+/opt/project/karpathy-llm-wiki-vault/.gitworktree/light-ingest-eval
 ```
 
 如果要指定 fixture：

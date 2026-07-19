@@ -2,7 +2,14 @@
 set -euo pipefail
 
 script_name="$(basename "$0")"
-default_worktree="${TMPDIR:-/tmp}/karpathy-llm-wiki-vault-light-ingest-eval"
+
+# 默认把测试 worktree 放在当前仓库内，避免 macOS 的 TMPDIR 被解析到 /private/var/...。
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+if [[ -n "$repo_root" ]]; then
+  default_worktree="$repo_root/.gitworktree/light-ingest-eval"
+else
+  default_worktree=".gitworktree/light-ingest-eval"
+fi
 default_fixture="raw/05-operation-guides/gitlab-runner-troubleshooting.md"
 
 worktree="$default_worktree"
@@ -55,6 +62,7 @@ normalize_worktree_path() {
   local path="$1"
   local parent base
 
+  # 只规范化父目录：目标 worktree 可能还不存在，不能直接 cd 到目标路径。
   parent="$(dirname "$path")"
   base="$(basename "$path")"
 
@@ -69,6 +77,7 @@ is_registered_worktree() {
   local target="$1"
   local line path
 
+  # git worktree list 使用 canonical path；比较前调用方也会做路径规范化。
   while IFS= read -r line; do
     case "$line" in
       worktree\ *)
@@ -118,7 +127,7 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-repo_root="$(git rev-parse --show-toplevel 2>/dev/null)" || die "run this script inside the wiki git repository"
+[[ -n "$repo_root" ]] || die "run this script inside the wiki git repository"
 cd "$repo_root"
 
 if [[ "$worktree" != /* ]]; then
@@ -143,13 +152,16 @@ case "$fixture" in
     ;;
 esac
 
-if ! git diff --quiet || ! git diff --cached --quiet; then
+# 可重复 eval 的真实创建要求主工作区没有 tracked 脏改动；dry-run 只做路径预览。
+if (( ! dry_run )) && { ! git diff --quiet || ! git diff --cached --quiet; }; then
   die "tracked changes exist in the current worktree; commit or stash them before preparing a repeatable eval"
 fi
 
+# 固定 base commit，并确认 fixture 在该 commit 中真实存在。
 base_commit="$(git rev-parse --verify "$ref^{commit}" 2>/dev/null)" || die "ref is not a commit: $ref"
 git cat-file -e "$base_commit:$fixture" 2>/dev/null || die "fixture does not exist at $ref: $fixture"
 
+# 如果旧测试现场还注册着，要求显式 cleanup 或 --force，避免悄悄覆盖现场。
 if is_registered_worktree "$worktree"; then
   if (( force )); then
     run_cmd git worktree remove --force "$worktree"

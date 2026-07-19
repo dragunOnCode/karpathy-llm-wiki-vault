@@ -2,7 +2,14 @@
 set -euo pipefail
 
 script_name="$(basename "$0")"
-default_worktree="${TMPDIR:-/tmp}/karpathy-llm-wiki-vault-light-ingest-eval"
+
+# 默认清理当前仓库内的 eval worktree，和 prepare 脚本保持一致。
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
+if [[ -n "$repo_root" ]]; then
+  default_worktree="$repo_root/.gitworktree/light-ingest-eval"
+else
+  default_worktree=".gitworktree/light-ingest-eval"
+fi
 
 worktree="$default_worktree"
 dry_run=0
@@ -39,6 +46,7 @@ normalize_worktree_path() {
   local path="$1"
   local parent base
 
+  # 只规范化父目录：待清理路径可能已经不存在。
   parent="$(dirname "$path")"
   base="$(basename "$path")"
 
@@ -53,6 +61,7 @@ is_registered_worktree() {
   local target="$1"
   local line path
 
+  # 只信任 git worktree 注册表，避免误删一个同名普通目录。
   while IFS= read -r line; do
     case "$line" in
       worktree\ *)
@@ -101,6 +110,7 @@ if [[ "$worktree" == "$main_root" ]]; then
   die "refusing to remove the main repository: $main_root"
 fi
 
+# 路径存在但没有注册为 worktree 时直接拒绝，保护普通目录和用户文件。
 if ! is_registered_worktree "$worktree"; then
   if [[ -e "$worktree" ]]; then
     die "path exists but is not a registered git worktree: $worktree"
@@ -119,6 +129,7 @@ if (( dry_run )); then
   exit 0
 fi
 
+# 如果当前 shell 正在待删除 worktree 内，先跳回主仓库再删除。
 case "$(pwd -P)/" in
   "$worktree"/*)
     cd "$main_root"
