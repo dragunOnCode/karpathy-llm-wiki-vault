@@ -1,13 +1,13 @@
 ---
 name: lint
-description: 知识库全局健康度检查。扫描 wiki/ 目录，检测死链、孤儿页面、未同步索引、过时/死 sources 路径、不合格 Claim（缺出处锚点或未回链 Source）、空关联 Domain，以及知识冲突。当用户输入 /lint、/scan、/health 或要求“检查知识库状态”、“检查健康”时调用。不读取 raw/09-archive/ 正文。
+description: 知识库全局健康度检查。扫描 wiki/ 目录，检测死链、孤儿页面、未同步索引、过时/死 sources 路径、不合格 Claim、空关联 Domain、retired 页面治理问题，以及知识冲突。当用户输入 /lint、/scan、/health 或要求“检查知识库状态”、“检查健康”时调用。不读取 raw/09-archive/ 正文。
 user-invocable: true
 ---
 
 # lint 技能：知识图谱健康巡检
 
 ## 核心目标
-将软件工程中的“静态代码分析”引入知识管理。定期运行此 skill，找出知识库长期演进中产生的：死链、孤岛、未同步索引、过时 provenance、Claim/Domain 契约违规、认知冲突。
+将软件工程中的“静态代码分析”引入知识管理。定期运行此 skill，找出知识库长期演进中产生的：死链、孤岛、未同步索引、过时 provenance、Claim/Domain 契约违规、retired 页面治理问题、认知冲突。
 
 ## 触发条件
 - 用户输入 `/lint`
@@ -60,6 +60,24 @@ user-invocable: true
 - 可统计 `raw/` 非 `09-archive/` 下是否仍有待 ingest 文件
 - 不读取 `09-archive/` 正文
 
+### 第 7 步：Retired 页面治理检查
+
+扫描所有 frontmatter 含 `status: retired` 的页面：
+
+1. retired 页面必须包含 `## 退役说明`。
+2. retired 页面必须包含 `retired_at`、`retired_reason`，并允许 `superseded_by: []` 表示暂无替代页。
+3. retired 页面不要求继续出现在 `wiki/index.md` 活跃分类中；若仍在 active index 中 → 红灯。
+4. retired 页面应登记到 `wiki/retired.md`；未登记 → 黄灯。
+5. retired 页面不按普通孤儿页面处理，只要能从 `wiki/retired.md` 或 `wiki/log.md` 找到治理入口即可。
+6. 检查活跃页面是否仍链接 retired 页面：
+   - 若活跃页面在 `## 关联连接`、核心结论、当前做法、依据区域引用 retired 页面 → 红灯。
+   - 若位于 `## 历史/退役引用` 且明确标注 retired → 可接受。
+
+扫描所有 frontmatter 含 `status: needs_review` 的页面：
+
+1. 报告为黄灯，提示需要人工确认。
+2. 若 query/synthesis 把 needs_review 页面作为强结论来源，应提示治理风险。
+
 ## 报告输出规范
 
 扫描完成后，输出结构化报告，严格遵循以下格式：
@@ -81,12 +99,14 @@ user-invocable: true
 - **发现 N 个死 sources 路径**：[页面] → 路径（inbox/archive 均不存在）
 - **发现 N 个不合格 Claim**：[缺出处锚点 / 未回链 Source / sources 为空]
 - **发现 N 个空 Domain**：[关联连接为空]
+- **发现 N 个 retired 治理问题**：[仍在 active index / 缺 `## 退役说明` / 活跃页面仍依赖 retired 页面]
 
 ### 🛠️ 下一步行动
 1. 是否需要自动修复未同步索引？
 2. 是否需要将过时 sources 路径改写为 raw/09-archive/…？
 3. 是否需要补全不合格 Claim 的锚点与 Source 回链？
 4. 是否需要针对知识冲突进行重新推演？
+5. 是否需要把 retired 页面从活跃入口移除，或清理活跃页面对 retired 页面的依赖？
 ```
 
 ## 硬约束
@@ -94,3 +114,4 @@ user-invocable: true
 - **不读 archive 正文**：只做路径存在性检查
 - **手动确认**：报告后等待用户确认再执行修复
 - **静默日志**：修复完成后，在 wiki/log.md 追加 `## [YYYY-MM-DD] lint | 修复了 N 个问题`
+- **retired 区分处理**：`status: retired` 页面不按普通孤岛页面误报，但活跃页面不得继续把 retired 页面作为当前依据

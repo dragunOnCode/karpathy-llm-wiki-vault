@@ -46,7 +46,7 @@
     ```
 2. **`wiki/log.md` (操作日志)**：
    只能追加写入（Append-only）。每次操作后记录：`## [YYYY-MM-DD] <动作> | <操作简述>`。
-   操作类型： ingest, query, update, lint, sync
+   操作类型： ingest, query, update, lint, sync, retire
    范例：
    ```markdown
    ## [2026-04-11] ingest | 引入项目 Claude Code 核心概念
@@ -93,6 +93,7 @@
    每一个 wiki 页面必须包含 `## 关联连接` 区域，使用 Obsidian 双链 `[[页面名称]]` 链接到其他相关页面。绝不能产生孤岛页面。
    - Claim **必须**回链至少一个 Source 摘要页
    - Domain **必须**链接其覆盖的 Concepts / Entities / Claims（至少一类非空）
+   - `status: retired` 的页面保留历史双链用于审计，但活跃页面不得继续把 retired 页面作为当前依据；确需保留时应移入“历史/退役引用”并明确标注。
 7. **矛盾处理原则**：
    如果新摄入的知识与旧知识冲突，不要静默覆盖。在页面中新建 `## 知识冲突` 区块，将两种说法都保留并做对比。
 
@@ -100,9 +101,10 @@
 当被要求执行以下操作时，请遵循核心逻辑（由 `.opencode/skills/` 下对应技能细则接管）：
 
 - `/ingest <路径>`：读取指定的 `raw/` **inbox** 文件（排除 `09-archive/`），提炼 Sources / Claims / Entities / Concepts，并视需要更新 Domains；归档后把 `sources:` 更新为 archive 路径。必须更新 index 和 log。本流程不读 archive 正文。
-- `/query <问题>`：通过读取 `wiki/index.md` 寻找相关 Sources / Claims / Entities / Concepts / Domains / Syntheses 并回答。若 wiki 有缺口，允许读 `raw/09-archive/` 核对原文：无则声明未找到；有则调用 `/update` 补编后再答。
+- `/query <问题>`：通过读取 `wiki/index.md` 寻找相关 Sources / Claims / Entities / Concepts / Domains / Syntheses 并回答；默认跳过 `status: retired` 的页面，除非用户明确要求查历史或包含退役内容。若 wiki 有缺口，允许读 `raw/09-archive/` 核对原文：无则声明未找到；有则调用 `/update` 补编后再答。
 - `/update`：在已确认「原文有、wiki 无」后，定向补编（含 Claim / Domain 等落点），并更新 index 与 log。可由 query 调用，也可由用户显式触发。
 - `/lint`：全局扫描 `wiki/`，找出孤岛、死链、未同步索引、过时/死 sources 路径、**缺少出处锚点或未回链 Source 的 Claim**、**关联区为空的 Domain**，以及知识冲突；不读 archive 正文。
+- `/retire <目标>`：将过时、错误、不再适用或来源废弃的 wiki 页面从活跃知识库下架。支持单页、source、关键词三种候选发现；确认前只输出计划，确认后写 `status: retired`、更新 `wiki/index.md` / `wiki/retired.md` / `wiki/log.md`，并清理活跃页面对 retired 页面的当前依据链接。不得修改 `raw/` 原文。
 
 # 页面 Frontmatter (YAML) 规范
 所有生成的 wiki 页面必须包含以下 YAML 头部：
@@ -111,9 +113,16 @@ title: "页面标题"
 type: concept | entity | source | claim | domain | synthesis
 tags: [知识标签]
 sources: [关联的raw文件相对路径]
+status: active | retired | needs_review
+retired_at: YYYY-MM-DD | null
+retired_reason: "退役原因；未退役时可为空"
+superseded_by: ["[[替代页面]]"] | []
 last_updated: YYYY-MM-DD
 ---
 
 补充约定：
 - `type: claim`：`sources:` **必填**（至少一个 raw/archive 路径）；正文必须有 `## 出处锚点`。
 - `type: domain`：`sources:` 可为聚合列表或留空数组；正文必须有 `## 概述` 与非空的 `## 关联连接`。
+- `status` 缺省视为 `active`；新生成页面推荐显式写 `status: active`。
+- `status: retired`：页面必须包含 `## 退役说明`，从 `wiki/index.md` 活跃分类移除，并登记到 `wiki/retired.md`；`superseded_by: []` 表示暂无替代页面。
+- `status: needs_review`：表示候选退役或可信度待复核；不得作为强结论静默用于回答。
