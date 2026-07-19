@@ -15,7 +15,7 @@ user-invocable: true
 - `/retire [[PageName]]`：退役明确指定的单个 wiki 页面。
 - `/retire --source <raw-path-or-source-page>`：按来源查找候选页面，适合一次 ingest 产物治理。
 - `/retire --match "关键词"`：按关键词查找候选页面，只产出候选清单，等待确认。
-- `/retire --confirm`：用户确认上一轮退役计划后，才执行写入。
+- `/retire --confirm <plan_id> <option>`：读取落盘计划文件，并执行用户确认的方案。
 - 用户说“这个知识过时了”“这批页面不要再被 query 用到”“把某来源编译出的 wiki 下架”。
 
 ## 权限边界
@@ -25,6 +25,7 @@ user-invocable: true
 | 读取 `wiki/index.md`、`wiki/` 页面与 `wiki/log.md` | 修改 `raw/` 原文或移动 `raw/` 文件 |
 | 扫描 wiki 双链、frontmatter、`sources:` 路径 | 对 `raw/09-archive/` 做全量读取 |
 | 修改 wiki 页面 frontmatter、正文退役说明、活跃双链、`wiki/index.md`、`wiki/retired.md` | 未经用户确认就批量写入 |
+| 创建或更新 `wiki/_ops/retire-plans/` 下的退役计划文件 | 把 `wiki/_ops/` 当作知识页加入 index 或 query |
 | 追加 `wiki/log.md` | 把 retire 当作测试现场重置或 hard delete |
 
 **绝对规则**：retire 不修改 raw。raw 是不可变来源层；retire 只处理 `wiki/` 编译层。
@@ -80,23 +81,114 @@ superseded_by: []
 
 活跃页面若在“核心结论、关联连接、当前做法、依据”等区域链接 retired 页面，必须纳入计划：删除该活跃依赖、改为替代页，或移入“历史/退役引用”并明确标注。
 
+## 持久化计划文件
+
+retire 是交互式写入流程，不能依赖上一轮聊天上下文记住“方案 A 是什么”。候选分析完成后，必须把完整计划写入仓库：
+
+```text
+wiki/_ops/retire-plans/<plan_id>.md
+```
+
+`plan_id` 使用可排序、可读的唯一值，例如：
+
+```text
+retire-20260720-001
+```
+
+计划文件是操作状态，不是知识页；不要加入 `wiki/index.md`，也不要作为 `/query` 的知识依据。
+
+计划文件必须包含：
+
+```yaml
+---
+plan_id: retire-20260720-001
+type: retire_plan
+status: pending
+created_at: 2026-07-20
+created_from_command: "/retire --source raw/09-archive/foo.md"
+target: "raw/09-archive/foo.md"
+options: [A, B]
+selected_option: null
+applied_at: null
+---
+```
+
+正文必须写明每个方案的完整动作，而不只写摘要：
+
+```markdown
+## 方案 A
+
+退役：
+- [[摘要-foo]]
+- [[claim-foo-risk]]
+
+更新：
+- 从 [[FooDomain]] 的当前依据中移除 [[claim-foo-risk]]
+- 更新 `wiki/retired.md`
+- 追加 `wiki/log.md`
+
+## 方案 B
+
+标记待复核：
+- [[FooDomain]] -> `status: needs_review`
+```
+
+计划状态：
+
+| 状态 | 含义 |
+|------|------|
+| `status: pending` | 等待用户确认，可执行 |
+| `status: applied` | 已执行，禁止重复执行 |
+| `status: cancelled` | 已取消，禁止执行 |
+
 ## 写入前确认
 
-除非用户已经使用 `/retire --confirm` 明确确认，否则只能输出退役计划，不能写文件。
+除非用户已经使用 `/retire --confirm <plan_id> <option>` 明确确认，否则只能输出退役计划并写入 `status: pending` 的计划文件，不能修改知识页。
 
 计划格式：
 
 ```markdown
 ## 退役候选计划
 
+计划文件：`wiki/_ops/retire-plans/retire-20260720-001.md`
+计划 ID：`retire-20260720-001`
+
 | 页面 | 类型 | 建议状态 | 命中原因 | 替代页面 | 活跃反向链接 | 处理建议 |
 |------|------|----------|----------|----------|--------------|----------|
 | [[claim-old]] | claim | retired | 来自废弃 source | 无 | [[DomainA]] | 从 DomainA 当前依据中移除 |
 
-确认后请回复：`/retire --confirm`
+确认后请回复：`/retire --confirm retire-20260720-001 A`
 ```
 
 如果无法判断，应建议 `needs_review`，而不是冒险退役。
+
+禁止只要求用户回复方案字母，或只接受 `/retire --confirm A`。裸方案确认会在上下文压缩后丢失方案含义，必须要求 plan_id。
+
+## 确认命令处理
+
+收到 `/retire --confirm <plan_id> <option>` 后：
+
+1. 重新读取本 skill。
+2. 读取计划文件：`wiki/_ops/retire-plans/<plan_id>.md`。
+3. 校验 frontmatter：
+   - `plan_id` 与命令一致。
+   - `status: pending`。
+   - `<option>` 存在于 `options:`，且正文有对应 `## 方案 <option>`。
+4. 若计划文件不存在、已 `applied`、已 `cancelled`、option 不存在，或候选页面当前状态与计划明显不一致，停止并向用户说明，不写入。
+5. 只执行计划文件中对应方案的动作，不从聊天记忆中补动作。
+6. 执行后把计划文件更新为：
+   - `status: applied`
+   - `selected_option: "<option>"`
+   - `applied_at: YYYY-MM-DD`
+7. 再追加 `wiki/log.md`。
+
+如果用户要取消计划，使用：
+
+```text
+/retire --cancel <plan_id>
+```
+
+取消时只把计划文件 `status` 改为 `cancelled` 并记录原因，不修改知识页。
 
 ## 确认后的写入
 

@@ -13,6 +13,7 @@
   - 存放图片、PDF和媒体。引用时使用 Obsidian 标准语法 `![[文件名称.png]]`。
 - `/wiki/` (编译输出层 - You Own This)：
   - 这是你的专属工作区。你需要在此处创建、更新、提炼知识并解决矛盾。
+  - `wiki/_ops/` 是操作状态目录，不是知识页目录。交互式 skill 可在这里保存计划文件（例如 retire plan），用于跨上下文确认；不得加入 `wiki/index.md`，`/query` 不把它当知识来源，`/lint` 的普通页面检查应排除此目录。
 
 # Wiki 核心文件契约 (The Wiki Schema)
 当你在 `/wiki/` 中工作时（尤其是执行写入操作后），必须维护以下基石：
@@ -104,7 +105,7 @@
 - `/query <问题>`：通过读取 `wiki/index.md` 寻找相关 Sources / Claims / Entities / Concepts / Domains / Syntheses 并回答；默认跳过 `status: retired` 的页面，除非用户明确要求查历史或包含退役内容。若 wiki 有缺口，允许读 `raw/09-archive/` 核对原文：无则声明未找到；有则调用 `/update` 补编后再答。
 - `/update`：在已确认「原文有、wiki 无」后，定向补编（含 Claim / Domain 等落点），并更新 index 与 log。可由 query 调用，也可由用户显式触发。
 - `/lint`：全局扫描 `wiki/`，找出孤岛、死链、未同步索引、过时/死 sources 路径、**缺少出处锚点或未回链 Source 的 Claim**、**关联区为空的 Domain**，以及知识冲突；不读 archive 正文。
-- `/retire <目标>`：将过时、错误、不再适用或来源废弃的 wiki 页面从活跃知识库下架。支持单页、source、关键词三种候选发现；确认前只输出计划，确认后写 `status: retired`、更新 `wiki/index.md` / `wiki/retired.md` / `wiki/log.md`，并清理活跃页面对 retired 页面的当前依据链接。不得修改 `raw/` 原文。
+- `/retire <目标>`：将过时、错误、不再适用或来源废弃的 wiki 页面从活跃知识库下架。支持单页、source、关键词三种候选发现；候选阶段必须把完整计划写入 `wiki/_ops/retire-plans/<plan_id>.md`。确认时使用 `/retire --confirm <plan_id> <option>` 读取计划文件执行，而不是依赖聊天上下文；执行后写 `status: retired`、更新 `wiki/index.md` / `wiki/retired.md` / `wiki/log.md`，并清理活跃页面对 retired 页面的当前依据链接。不得修改 `raw/` 原文。
 
 # 页面 Frontmatter (YAML) 规范
 所有生成的 wiki 页面必须包含以下 YAML 头部：

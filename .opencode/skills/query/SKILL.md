@@ -29,6 +29,7 @@ user-invocable: true
 | **按需**读取 `raw/09-archive/` 单篇，用于核对缺口 | 对 archive 做全量扫描或再 ingest |
 | 在确认有原文后 **加载并遵循 update 技能** | 跳过核对、直接让 update「去 archive 里找找看」 |
 | 高价值回答经用户同意写入 synthesis（或交由 update） | 修改 `raw/` 原文 |
+| 只在相关 skill 明确要求时读取 `wiki/_ops/` 操作计划 | 把 `wiki/_ops/` 当作知识来源回答用户 |
 
 ## 降级策略
 
@@ -43,6 +44,8 @@ user-invocable: true
 ### 步骤 1：查阅全局索引
 
 **永远的第一步**：读取 `wiki/index.md`
+
+`wiki/_ops/` 是操作状态目录，不是知识页目录；普通 query 不扫描、不引用其中的 retire plan 或其他计划文件。
 
 在 index.md 中定位与问题相关的：
 

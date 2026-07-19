@@ -21,12 +21,12 @@ user-invocable: true
 
 ### 第 1 步：索引一致性检查
 1. 读取 `wiki/index.md` 全部内容
-2. 扫描 `wiki/` 下所有 `.md` 文件（排除 index.md 和 log.md）
+2. 扫描 `wiki/` 下所有 `.md` 文件（排除 index.md、log.md、`wiki/_ops/`）
 3. 提取 index.md 中注册的所有双链链接 `[[页面名称]]`
 4. 比对：找出已注册但文件不存在的条目 OR 文件存在但未注册的页面
 
 ### 第 2 步：双向链接健康检查
-1. 扫描所有 `.md` 文件，提取所有 `[[双链]]` 格式的链接
+1. 扫描所有知识页 `.md` 文件，提取所有 `[[双链]]` 格式的链接；排除 `wiki/_ops/` 操作状态目录
 2. 如果链接指向的页面不存在 → 标记为**死链**
 3. 统计被引用的页面（排除 self-reference）
 4. 找出从未被任何其他页面引用的页面 → **孤儿页面**
@@ -77,6 +77,15 @@ user-invocable: true
 
 1. 报告为黄灯，提示需要人工确认。
 2. 若 query/synthesis 把 needs_review 页面作为强结论来源，应提示治理风险。
+
+### 第 8 步：操作状态目录检查
+
+`wiki/_ops/` 存放交互式 skill 的计划文件，例如 `wiki/_ops/retire-plans/<plan_id>.md`。这些文件不是知识页：
+
+1. 不要求出现在 `wiki/index.md`。
+2. 不按普通孤岛页面、Claim、Domain 检查。
+3. 如果 `wiki/index.md` 把 `wiki/_ops/` 中的计划文件注册为知识页 → 红灯。
+4. 若 retire plan 长期保持 `status: pending`，可作为黄灯提示人工清理，但不得静默执行。
 
 ## 报告输出规范
 
